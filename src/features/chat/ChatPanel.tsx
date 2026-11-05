@@ -1,0 +1,10 @@
+import { useState } from 'react';
+import { Button } from '../../components/ui/Button';
+import { Card } from '../../components/ui/Card';
+type Message={role:'user'|'assistant';text:string};
+const initial: Message[]=[{role:'assistant',text:'Good afternoon. I can help you explore market movements and company information using mock data for this proof of concept.'}];
+export function ChatPanel() {
+ const [messages,setMessages]=useState(initial); const [value,setValue]=useState('');
+ function send(){ const q=value.trim(); if(!q)return; setMessages(m=>[...m,{role:'user',text:q},{role:'assistant',text:'This is a mocked response. The market view is mixed, with positive momentum in selected Nordic equities. Review the cited sources before making financial decisions.'}]); setValue(''); }
+ return <Card className="flex min-h-[520px] flex-col p-0 overflow-hidden"><div className="border-b border-slate-200 p-5 dark:border-slate-800"><h2 className="text-lg font-bold">Ask North Star</h2><p className="text-sm text-slate-500">Market information, explained clearly.</p></div><div className="flex-1 space-y-4 p-5" aria-live="polite">{messages.map((m,i)=><div key={i} className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-6 ${m.role==='user'?'ml-auto bg-seb-700 text-white':'bg-slate-100 dark:bg-slate-800'}`}><p>{m.text}</p>{m.role==='assistant'&&i>0&&<p className="mt-3 border-t border-slate-300 pt-2 text-xs text-slate-500 dark:border-slate-700">Sources: Mock SEB Research • Mock public market data</p>}</div>)}</div><div className="border-t border-slate-200 p-4 dark:border-slate-800"><div className="flex gap-2"><input className="focus-ring min-w-0 flex-1 rounded-lg border border-slate-300 bg-transparent px-3 py-2 dark:border-slate-700" value={value} onChange={e=>setValue(e.target.value)} onKeyDown={e=>e.key==='Enter'&&send()} placeholder="Ask about a market or company"/><Button variant="secondary" aria-label="Voice support planned" title="Voice support planned">Mic</Button><Button onClick={send}>Send</Button></div><p className="mt-2 text-xs text-slate-500">General information only. Not a personal investment recommendation.</p></div></Card>;
+}
